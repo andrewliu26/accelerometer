@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">accelerometer</string>
+    <string name="app_name">Accelerometer</string>
+    <string name="adjust">Adjust significant move</string>
 </resources>
