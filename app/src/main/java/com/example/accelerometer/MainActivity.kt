@@ -17,6 +17,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sensorManager: SensorManager
     private var linearAccelerationSensor: Sensor? = null
     private var threshold: Double = 3.5
+    private var lastTimeToastShown: Long = 0
+    private val debounce: Long = 3000
 
     private val sensorEventListener = object : SensorEventListener {
         override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
@@ -29,7 +31,8 @@ class MainActivity : AppCompatActivity() {
                 val z = it.values[2]
                 val magnitude = sqrt((x * x + y * y + z * z).toDouble())
 
-                if (magnitude > threshold) {
+                if (magnitude > threshold && System.currentTimeMillis() - lastTimeToastShown >= debounce) {
+                    lastTimeToastShown = System.currentTimeMillis()
                     Log.d("Movement", "Movement detected: $magnitude, threshold: $threshold")
                     Toast.makeText(this@MainActivity, "Movement Detected", Toast.LENGTH_SHORT).show()
                 }
