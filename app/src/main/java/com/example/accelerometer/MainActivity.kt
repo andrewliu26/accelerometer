@@ -47,22 +47,26 @@ class MainActivity : AppCompatActivity() {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         linearAccelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
 
-        val moveSeekBar: SeekBar = findViewById(R.id.moveSeekBar)
-        moveSeekBar.progress = 50
-        moveSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                threshold = 0.05 + (6.95 * progress / 100)
-                Log.d("SeekBar", "Threshold set to: $threshold")
-            }
+        if (linearAccelerationSensor == null) {
+            Toast.makeText(this, "No accelerometer sensor found on this device", Toast.LENGTH_LONG).show()
+        } else {
+            val moveSeekBar: SeekBar = findViewById(R.id.moveSeekBar)
+            moveSeekBar.progress = 50
+            moveSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                    threshold = 0.05 + (6.95 * progress / 100)
+                    Log.d("SeekBar", "Threshold set to: $threshold")
+                }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                Log.d("SeekBar", "Started tracking touch")
-            }
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    Log.d("SeekBar", "Started tracking touch")
+                }
 
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                Log.d("SeekBar", "Stopped tracking touch")
-            }
-        })
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    Log.d("SeekBar", "Stopped tracking touch")
+                }
+            })
+        }
     }
 
     override fun onResume() {
